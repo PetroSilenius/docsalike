@@ -1,8 +1,14 @@
 import Head from 'next/head'
-import { Folder, MoreVertical, Plus } from 'react-feather'
+import { Folder, MoreVertical } from 'react-feather'
 import Header from '../components/Header'
+import { getSession, useSession } from 'next-auth/client'
+import Login from '../components/Login'
 
 export default function Home() {
+  const [session, loading] = useSession()
+
+  if (!session) return <Login />
+
   return (
     <div>
       <Head>
@@ -26,8 +32,8 @@ export default function Home() {
               width="62"
               height="62"
               viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke-linecap="square"
+              strokeWidth="2"
+              strokeLinecap="square"
               id="g-plus-icon"
             >
               <line x1="12" y1="12" x2="12" y2="19" stroke="#0F9D58"></line>
@@ -42,17 +48,24 @@ export default function Home() {
 
       <section className="bg-white px-10">
         <table className="grid max-w-3xl mx-auto py-8">
-          <tr className="flex justify-between pb-5">
-            <th className="font-medium flex flex-grow">
-              <h2>My Documents</h2>
-            </th>
-            <th className="font-normal mr-12">
-              <p>Date created</p>
-            </th>
-            <th>
-              <Folder />
-            </th>
-          </tr>
+          <thead>
+            <tr className="flex justify-between pb-5">
+              <th className="font-medium flex flex-grow">
+                <h2>My Documents</h2>
+              </th>
+              <th className="font-normal mr-12">
+                <p>Date created</p>
+              </th>
+              <th>
+                <Folder />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+            </tr>
+          </tbody>
         </table>
       </section>
     </div>
