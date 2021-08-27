@@ -71,3 +71,13 @@ export default function Home() {
     </div>
   )
 }
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  return {
+    props: {
+      session,
+    },
+  }
+}
