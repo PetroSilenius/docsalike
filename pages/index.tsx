@@ -1,13 +1,38 @@
 import Head from 'next/head'
-import { Folder, MoreVertical } from 'react-feather'
+import { Folder, MoreVertical, FileText } from 'react-feather'
 import Header from '../components/Header'
 import { getSession, useSession } from 'next-auth/client'
 import Login from '../components/Login'
+import { db } from '../firebase'
+import firebase from 'firebase/app'
+import { useCollectionOnce } from 'react-firebase-hooks/firestore'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function Home() {
-  const [session, loading] = useSession()
-
+  const [session] = useSession()
   if (!session) return <Login />
+
+  const router = useRouter()
+
+  const [documentsSnapshot] = useCollectionOnce(
+    db
+      .collection('documents')
+      .where('userEmail', '==', session.user.email)
+      .orderBy('timestamp', 'desc')
+  )
+
+  const createDocument = () => {
+    db.collection('documents')
+      .add({
+        fileName: 'New document',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        userEmail: session.user.email,
+      })
+      .then((documentRef) => {
+        router.push(`/document/${documentRef.id}`)
+      })
+  }
 
   return (
     <div>
@@ -22,11 +47,14 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between py-6">
             <h2 className="text-gray-600 text-lg">Start a new document</h2>
-            <button className="duration-300 py-2.5 px-2.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
+            <button className="duration-300 p-1.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
               <MoreVertical />
             </button>
           </div>
-          <button className="relative h-52 w-40 bg-white grid place-items-center rounded border hover:border-blue-400">
+          <button
+            onClick={createDocument}
+            className="relative h-52 w-40 bg-white grid place-items-center rounded border hover:border-blue-400"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="62"
@@ -49,7 +77,7 @@ export default function Home() {
       <section className="bg-white px-10">
         <table className="grid max-w-3xl mx-auto py-8">
           <thead>
-            <tr className="flex justify-between pb-5">
+            <tr className="flex justify-between pb-5 px-5">
               <th className="font-medium flex flex-grow">
                 <h2>My Documents</h2>
               </th>
@@ -62,9 +90,28 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-            </tr>
+            {documentsSnapshot?.docs.map((doc) => (
+              <Link href={`/document/${doc.id}`} key={doc.id}>
+                <tr className="flex justify-between items-center p-4 rounded-lg hover:bg-gray-100 cursor-pointer text-sm">
+                  <td className="flex flex-grow items-center">
+                    <FileText
+                      size={32}
+                      className="text-white"
+                      style={{ fill: 'rgba(96, 165, 250)' }}
+                    />
+                    <span className="pl-5">{doc.data().fileName}</span>
+                  </td>
+                  <td className="mr-12">
+                    {doc.data().timestamp?.toDate().toLocaleDateString()}
+                  </td>
+                  <td>
+                    <button className="duration-300 p-1.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
+                      <MoreVertical size="20" />
+                    </button>
+                  </td>
+                </tr>
+              </Link>
+            ))}
           </tbody>
         </table>
       </section>
