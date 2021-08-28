@@ -37,12 +37,27 @@ function TextEditor({ id, snapshot }) {
   }
 
   return (
-    <div className="bg-gray-200 min-h-screen pb-16">
+    <div className="bg-gray-200 min-h-screen">
       <Editor
         editorState={editorState}
         onEditorStateChange={onEditorStateChange}
-        toolbarClassName="flex sticky top-0 z-50 justify-center mx-auto"
-        editorClassName="mt-6 mx-auto mb-12 p-10 max-w-5xl bg-white shadow-lg border "
+        toolbar={{
+          options: [
+            'history',
+            'blockType',
+            'fontFamily',
+            'fontSize',
+            'colorPicker',
+            'link',
+            'inline',
+            'textAlign',
+            'list',
+            'image',
+          ],
+        }}
+        toolbarClassName="flex sticky top-0 z-30 justify-center mx-auto"
+        editorClassName="mt-6 mx-auto mb-3 p-10 max-w-5xl bg-white shadow-lg border"
+        editorStyle={{ minHeight: '75vh' }}
       />
     </div>
   )

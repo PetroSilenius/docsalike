@@ -5,3 +5,21 @@
     @apply cursor-pointer hover:bg-gray-100 transition duration-200 ease-out py-1 px-1.5 rounded-lg;
   }
 }
+
+.rdw-option-wrapper {
+  border: 0 !important;
+}
+
+.rdw-option-wrapper:hover {
+  box-shadow: none !important;
+  background: rgba(243, 244, 246);
+}
+
+.rdw-dropdown-wrapper {
+  border: none !important;
+}
+
+.rdw-dropdown-wrapper:hover {
+  box-shadow: none !important;
+  background: rgba(243, 244, 246) !important;
+}
