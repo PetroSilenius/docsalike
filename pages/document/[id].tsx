@@ -4,6 +4,7 @@ import { FileText, Users } from 'react-feather'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Login from '../../components/Login'
+import TextEditor from '../../components/TextEditor'
 import { db } from '../../firebase'
 
 function Document() {
@@ -59,6 +60,8 @@ function Document() {
           className="cursor-pointer rounded-full ml-2"
         />
       </header>
+
+      <TextEditor id={id} snapshot={documentSnapshot} />
     </div>
   )
 }
