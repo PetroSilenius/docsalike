@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { getSession, useSession, signOut } from 'next-auth/client'
 import { useDocumentOnce } from 'react-firebase-hooks/firestore'
 import { FileText, Users } from 'react-feather'
@@ -11,6 +12,8 @@ function Document() {
   const [session] = useSession()
   if (!session) return <Login />
 
+  const [fileName, setFileName] = useState('')
+  const [modifyingFileName, setModifyingFileName] = useState(false)
   const router = useRouter()
   // router.query.id is always a single string since the route only take one slug
   const id = router.query.id as string
@@ -21,6 +24,16 @@ function Document() {
 
   if (!loadingSnapshot && !documentSnapshot?.data()?.fileName) {
     router.replace('/')
+  }
+
+  useEffect(() => {
+    setFileName(documentSnapshot?.data()?.fileName)
+  }, [documentSnapshot])
+
+  const onFileNameChange = () => {
+    db.collection('documents')
+      .doc(id)
+      .set({ fileName: fileName }, { merge: true })
   }
 
   return (
@@ -36,7 +49,19 @@ function Document() {
           </a>
         </Link>
         <div className="flex-grow px-2">
-          <h1>{documentSnapshot?.data()?.fileName}</h1>
+          {modifyingFileName ? (
+            <input
+              type="text"
+              value={fileName}
+              onChange={(event) => setFileName(event.target.value)}
+              onBlur={() => {
+                setModifyingFileName(false)
+                onFileNameChange()
+              }}
+            />
+          ) : (
+            <h1 onClick={() => setModifyingFileName(true)}>{fileName}</h1>
+          )}
           <div className="flex items-center text-sm space-x-1  h-8 text-gray-600">
             <p className="option">File</p>
             <p className="option">Edit</p>
