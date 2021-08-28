@@ -4,6 +4,7 @@ import { useDocumentOnce } from 'react-firebase-hooks/firestore'
 import { FileText, Users } from 'react-feather'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import firebase from 'firebase/app'
 import Login from '../../components/Login'
 import TextEditor from '../../components/TextEditor'
 import { db } from '../../firebase'
@@ -36,6 +37,28 @@ function Document() {
       .set({ fileName: fileName }, { merge: true })
   }
 
+  const copyDocument = () => {
+    db.collection('documents')
+      .add({
+        fileName: fileName + '(Copy)',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        userEmail: session.user.email,
+        editorState: documentSnapshot.data().editorState,
+      })
+      .then((documentRef) => {
+        router.push(`/document/${documentRef.id}`)
+      })
+  }
+
+  const deleteDocument = () => {
+    db.collection('documents')
+      .doc(id)
+      .delete()
+      .then(() => {
+        router.push('/')
+      })
+  }
+
   return (
     <div>
       <header className="flex justify-between items-center p-3 pb-1">
@@ -63,7 +86,23 @@ function Document() {
             <h1 onClick={() => setModifyingFileName(true)}>{fileName}</h1>
           )}
           <div className="flex items-center text-sm space-x-1  h-8 text-gray-600">
-            <p className="option">File</p>
+            <p className="group option relative">
+              File
+              <div className="group-hover:block hidden absolute z-50 -ml-1 bg-white  shadow-md">
+                <button
+                  onClick={copyDocument}
+                  className="hover:bg-gray-50 px-4 py-2 w-full"
+                >
+                  Copy
+                </button>
+                <button
+                  onClick={deleteDocument}
+                  className="hover:bg-gray-50 px-4 py-2 w-full"
+                >
+                  Delete
+                </button>
+              </div>
+            </p>
             <p className="option">Edit</p>
             <p className="option">View</p>
             <p className="option">Insert</p>
