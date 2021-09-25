@@ -4,13 +4,20 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { EditorProps } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
 import { db } from '../firebase'
+import { Data } from 'react-firebase-hooks/firestore/dist/firestore/types'
 
 const Editor: EditorProps = dynamic(
   () => import('react-draft-wysiwyg').then((module) => module.Editor),
   { ssr: false }
 )
 
-function TextEditor({ id, snapshot }) {
+function TextEditor({
+  id,
+  snapshot,
+}: {
+  id: string
+  snapshot: Data<{ [field: string]: any }, '', ''>
+}): JSX.Element {
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
   useEffect(() => {

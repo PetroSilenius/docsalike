@@ -9,7 +9,7 @@ import Login from '../../components/Login'
 import TextEditor from '../../components/TextEditor'
 import { auth, db } from '../../firebase'
 
-function Document() {
+function Document(): JSX.Element {
   const [user, loading] = useAuthState(auth)
   const [fileName, setFileName] = useState('')
   const [modifyingFileName, setModifyingFileName] = useState(false)
@@ -25,6 +25,7 @@ function Document() {
   useEffect(() => {
     setFileName(documentSnapshot?.fileName)
     if (!loadingSnapshot && !documentSnapshot) router.replace('/')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentSnapshot])
 
   if (!loading && !user) return <Login />
@@ -59,7 +60,7 @@ function Document() {
 
   return (
     <div>
-      <header className="flex justify-between items-center p-3 pb-1">
+      <header className="flex justify-between items-center p-3 py-1">
         <Link href="/">
           <a className="contents">
             <FileText
@@ -70,19 +71,21 @@ function Document() {
           </a>
         </Link>
         <div className="flex-grow px-2">
-          {modifyingFileName ? (
-            <input
-              type="text"
-              value={fileName}
-              onChange={(event) => setFileName(event.target.value)}
-              onBlur={() => {
-                setModifyingFileName(false)
-                onFileNameChange()
-              }}
-            />
-          ) : (
-            <h1 onClick={() => setModifyingFileName(true)}>{fileName}</h1>
-          )}
+          <div className="pl-1 h-7 text-xl">
+            {modifyingFileName ? (
+              <input
+                type="text"
+                value={fileName}
+                onChange={(event) => setFileName(event.target.value)}
+                onBlur={() => {
+                  setModifyingFileName(false)
+                  onFileNameChange()
+                }}
+              />
+            ) : (
+              <h1 onClick={() => setModifyingFileName(true)}>{fileName}</h1>
+            )}
+          </div>
           <div className="flex items-center text-sm space-x-1  h-8 text-gray-600">
             <div className="group option relative">
               File
@@ -105,7 +108,7 @@ function Document() {
             <p className="option">View</p>
             <p className="option">Insert</p>
             <p className="option">Format</p>
-            <p className="option">Tools</p>
+            <p className="option hidden sm:block">Tools</p>
           </div>
         </div>
         <button className="hidden sm:flex transition-all duration-300 py-2.5 px-4 mr-3 rounded-lg text-sm uppercase text-white bg-blue-400 hover:bg-blue-500 focus:bg-blue-400 active:bg-blue-600">
@@ -117,6 +120,7 @@ function Document() {
             auth.signOut()
           }}
           src={user?.photoURL}
+          alt="Profile - log out"
           height={36}
           width={36}
           className="cursor-pointer rounded-full ml-2"
