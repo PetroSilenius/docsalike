@@ -42,15 +42,19 @@ export default function Home(): JSX.Element {
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between py-6">
             <h2 className="text-gray-600 text-lg">Start a new document</h2>
-            <button className="duration-300 p-1.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
-              <MoreVertical aria-label="Options" />
+            <button
+              className="duration-300 p-1.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300"
+              aria-label="Options"
+            >
+              <MoreVertical />
             </button>
           </div>
           <button
             onClick={createDocument}
             className="relative h-52 w-40 bg-white grid place-items-center rounded border hover:border-blue-400"
+            aria-label="Create new document"
           >
-            <PlusIcon aria-label="Create new document" />
+            <PlusIcon />
           </button>
           <p className="ml-2 mt-2 font-semibold text-sm text-gray-600">Blank</p>
         </div>

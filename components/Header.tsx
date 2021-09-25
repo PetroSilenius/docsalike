@@ -5,8 +5,11 @@ import { auth } from '../firebase'
 function Header(): JSX.Element {
   return (
     <header className="sticky top-0 flex items-center px-2 sm:px-4 py-2 z-50 shadow-md bg-white">
-      <button className="transition-all duration-300 py-2.5 px-2.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
-        <Menu aria-label="Menu" />
+      <button
+        className="transition-all duration-300 py-2.5 px-2.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300"
+        aria-label="Menu"
+      >
+        <Menu />
       </button>
 
       <Link href="/">
@@ -38,7 +41,7 @@ function Header(): JSX.Element {
           auth.signOut()
         }}
         src={auth.currentUser?.photoURL}
-        aria-label="Profile - log out"
+        alt="Profile - log out"
         height={36}
         width={36}
         className="cursor-pointer rounded-full ml-2"

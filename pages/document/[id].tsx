@@ -120,7 +120,7 @@ function Document(): JSX.Element {
             auth.signOut()
           }}
           src={user?.photoURL}
-          aria-label="Profile - log out"
+          alt="Profile - log out"
           height={36}
           width={36}
           className="cursor-pointer rounded-full ml-2"
