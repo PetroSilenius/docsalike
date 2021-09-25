@@ -9,7 +9,7 @@ import firebase from 'firebase/app'
 import { useCollectionOnce } from 'react-firebase-hooks/firestore'
 import { useRouter } from 'next/router'
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const router = useRouter()
   const [user, loading] = useAuthState(auth)
 

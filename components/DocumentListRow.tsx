@@ -1,9 +1,17 @@
 import Link from 'next/link'
 import { MoreVertical, FileText } from 'react-feather'
 
-function DocumentListRow({ id, fileName, timestamp }) {
+function DocumentListRow({
+  id,
+  fileName,
+  timestamp,
+}: {
+  id: string
+  fileName: string
+  timestamp: any
+}): JSX.Element {
   return (
-    <Link href={`/document/${id}`}>
+    <Link href={`/document/${id}`} passHref>
       <tr className="flex justify-between items-center p-1 sm:p-4 rounded-lg hover:bg-gray-100 cursor-pointer text-sm">
         <td className="flex flex-grow items-center">
           <FileText

@@ -9,7 +9,7 @@ import Login from '../../components/Login'
 import TextEditor from '../../components/TextEditor'
 import { auth, db } from '../../firebase'
 
-function Document() {
+function Document(): JSX.Element {
   const [user, loading] = useAuthState(auth)
   const [fileName, setFileName] = useState('')
   const [modifyingFileName, setModifyingFileName] = useState(false)
@@ -25,6 +25,7 @@ function Document() {
   useEffect(() => {
     setFileName(documentSnapshot?.fileName)
     if (!loadingSnapshot && !documentSnapshot) router.replace('/')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentSnapshot])
 
   if (!loading && !user) return <Login />
