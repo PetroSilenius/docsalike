@@ -13,14 +13,10 @@ const Editor: EditorProps = dynamic(
 function TextEditor({ id, snapshot }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
-  console.log('snapshot', snapshot?.data())
-
   useEffect(() => {
-    if (snapshot?.data()?.editorState) {
+    if (snapshot?.editorState) {
       setEditorState(
-        EditorState.createWithContent(
-          convertFromRaw(snapshot.data().editorState)
-        )
+        EditorState.createWithContent(convertFromRaw(snapshot.editorState))
       )
     }
   }, [snapshot])

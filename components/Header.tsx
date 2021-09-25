@@ -1,10 +1,8 @@
 import Link from 'next/link'
 import { FileText, Menu, Search } from 'react-feather'
-import { signOut, useSession } from 'next-auth/client'
+import { auth } from '../firebase'
 
 function Header() {
-  const [session] = useSession()
-
   return (
     <header className="sticky top-0 flex items-center px-4 py-2 z-50 shadow-md bg-white">
       <button className="transition-all duration-300 py-2.5 px-2.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
@@ -36,9 +34,9 @@ function Header() {
       <img
         onClick={(e) => {
           e.preventDefault()
-          signOut()
+          auth.signOut()
         }}
-        src={session?.user?.image}
+        src={auth.currentUser?.photoURL}
         height={36}
         width={36}
         className="cursor-pointer rounded-full ml-2"

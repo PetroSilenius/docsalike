@@ -1,7 +1,14 @@
-import { signIn } from 'next-auth/client'
+import firebase from 'firebase/app'
+import { auth } from '../firebase'
 import { FileText } from 'react-feather'
 
 function Login() {
+  const signIn = () => {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    auth.signInWithPopup(provider)
+    document.cookie = `user=${auth.currentUser?.email}`
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <FileText

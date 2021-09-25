@@ -1,35 +1,33 @@
 import { useState, useEffect } from 'react'
-import { getSession, useSession, signOut } from 'next-auth/client'
-import { useDocumentOnce } from 'react-firebase-hooks/firestore'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
 import { FileText, Users } from 'react-feather'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import firebase from 'firebase/app'
 import Login from '../../components/Login'
 import TextEditor from '../../components/TextEditor'
-import { db } from '../../firebase'
+import { auth, db } from '../../firebase'
 
 function Document() {
-  const [session] = useSession()
-  if (!session) return <Login />
-
+  const [user, loading] = useAuthState(auth)
   const [fileName, setFileName] = useState('')
   const [modifyingFileName, setModifyingFileName] = useState(false)
+
   const router = useRouter()
-  // router.query.id is always a single string since the route only take one slug
+  // router.query.id is always a single string since the route only takes one slug
   const id = router.query.id as string
 
-  const [documentSnapshot, loadingSnapshot] = useDocumentOnce(
+  const [documentSnapshot, loadingSnapshot] = useDocumentDataOnce(
     db.collection('documents').doc(id)
   )
 
-  if (!loadingSnapshot && !documentSnapshot?.data()?.fileName) {
-    router.replace('/')
-  }
-
   useEffect(() => {
-    setFileName(documentSnapshot?.data()?.fileName)
+    setFileName(documentSnapshot?.fileName)
+    if (!loadingSnapshot && !documentSnapshot) router.replace('/')
   }, [documentSnapshot])
+
+  if (!loading && !user) return <Login />
 
   const onFileNameChange = () => {
     db.collection('documents')
@@ -42,8 +40,8 @@ function Document() {
       .add({
         fileName: fileName + '(Copy)',
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        userEmail: session.user.email,
-        editorState: documentSnapshot.data().editorState,
+        userEmail: user.email,
+        editorState: documentSnapshot.editorState,
       })
       .then((documentRef) => {
         router.push(`/document/${documentRef.id}`)
@@ -86,7 +84,7 @@ function Document() {
             <h1 onClick={() => setModifyingFileName(true)}>{fileName}</h1>
           )}
           <div className="flex items-center text-sm space-x-1  h-8 text-gray-600">
-            <p className="group option relative">
+            <div className="group option relative">
               File
               <div className="group-hover:block hidden absolute z-50 -ml-1 bg-white  shadow-md">
                 <button
@@ -102,7 +100,7 @@ function Document() {
                   Delete
                 </button>
               </div>
-            </p>
+            </div>
             <p className="option">Edit</p>
             <p className="option">View</p>
             <p className="option">Insert</p>
@@ -116,9 +114,9 @@ function Document() {
         <img
           onClick={(e) => {
             e.preventDefault()
-            signOut()
+            auth.signOut()
           }}
-          src={session?.user?.image}
+          src={user?.photoURL}
           height={36}
           width={36}
           className="cursor-pointer rounded-full ml-2"

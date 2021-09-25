@@ -1,34 +1,34 @@
 import Head from 'next/head'
 import { Folder, MoreVertical } from 'react-feather'
 import Header from '../components/Header'
-import { getSession, useSession } from 'next-auth/client'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import Login from '../components/Login'
 import PlusIcon from '../components/PlusIcon'
 import DocumentListRow from '../components/DocumentListRow'
-import { db } from '../firebase'
+import { auth, db } from '../firebase'
 import firebase from 'firebase/app'
 import { useCollectionOnce } from 'react-firebase-hooks/firestore'
 import { useRouter } from 'next/router'
 
 export default function Home() {
-  const [session] = useSession()
-  if (!session) return <Login />
-
   const router = useRouter()
+  const [user, loading] = useAuthState(auth)
 
   const [documentsSnapshot] = useCollectionOnce(
     db
       .collection('documents')
-      .where('userEmail', '==', session.user.email)
+      .where('userEmail', '==', user?.email ?? '')
       .orderBy('timestamp', 'desc')
   )
+
+  if (!loading && !user) return <Login />
 
   const createDocument = () => {
     db.collection('documents')
       .add({
         fileName: 'New document',
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        userEmail: session.user.email,
+        userEmail: user.email,
       })
       .then((documentRef) => {
         router.push(`/document/${documentRef.id}`)
@@ -92,4 +92,3 @@ export default function Home() {
     </div>
   )
 }
-
