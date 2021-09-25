@@ -5,8 +5,9 @@ import { FileText } from 'react-feather'
 function Login() {
   const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider()
-    auth.signInWithPopup(provider)
-    document.cookie = `user=${auth.currentUser?.email}`
+    auth.signInWithPopup(provider).catch((error) => {
+      alert(error.message)
+    })
   }
 
   return (
