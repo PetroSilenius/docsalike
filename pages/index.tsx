@@ -44,7 +44,7 @@ export default function Home() {
 
       <Header />
 
-      <section className="bg-gray-100 pb-10 px-10">
+      <section className="bg-gray-100 pb-10 px-5 sm:px-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between py-6">
             <h2 className="text-gray-600 text-lg">Start a new document</h2>
@@ -62,14 +62,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-10">
+      <section className="bg-white px-5 sm:px-10">
         <table className="grid max-w-3xl mx-auto py-8">
           <thead>
-            <tr className="flex justify-between pb-5 px-5">
+            <tr className="flex justify-between pb-5 px-1 sm:px-5">
               <th className="font-medium flex flex-grow">
                 <h2>My Documents</h2>
               </th>
-              <th className="font-normal mr-12">
+              <th className="font-normal mr-1 sm:mr-12">
                 <p>Date created</p>
               </th>
               <th>

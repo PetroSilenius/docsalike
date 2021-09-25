@@ -20,7 +20,6 @@ function Login() {
       <h1 className="ml-2 text-gray-600 text-3xl">Docsalike</h1>
       <button
         onClick={(e) => {
-          e.preventDefault()
           signIn()
         }}
         className="w-44 mt-10 transition-all duration-300 py-2.5 px-2.5 rounded-xl uppercase text-white bg-blue-400 hover:bg-blue-500 focus:bg-blue-400 active:bg-blue-600"

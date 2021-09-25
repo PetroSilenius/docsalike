@@ -4,7 +4,7 @@ import { auth } from '../firebase'
 
 function Header() {
   return (
-    <header className="sticky top-0 flex items-center px-4 py-2 z-50 shadow-md bg-white">
+    <header className="sticky top-0 flex items-center px-2 sm:px-4 py-2 z-50 shadow-md bg-white">
       <button className="transition-all duration-300 py-2.5 px-2.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
         <Menu />
       </button>
@@ -22,12 +22,12 @@ function Header() {
         </a>
       </Link>
 
-      <div className="flex flex-grow items-center mx-5 md:mx-20 px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:shadow-md">
+      <div className="flex flex-grow items-center mx-1 sm:mx-5 md:mx-20 px-1 sm:px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:shadow-md">
         <Search color="gray" />
         <input
           type="text"
           placeholder="Search"
-          className="flex-grow px-5 bg-transparent outline-none"
+          className="flex-grow px-1 sm:px-5 bg-transparent outline-none"
         />
       </div>
 
