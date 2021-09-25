@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { Folder, MoreVertical } from 'react-feather'
 import Header from '../components/Header'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -37,11 +36,6 @@ export default function Home() {
 
   return (
     <div>
-      <Head>
-        <title>Docsalike - A Google Docs clone</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Header />
 
       <section className="bg-gray-100 pb-10 px-5 sm:px-10">
