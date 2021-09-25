@@ -2,11 +2,11 @@ import Link from 'next/link'
 import { FileText, Menu, Search } from 'react-feather'
 import { auth } from '../firebase'
 
-function Header() {
+function Header(): JSX.Element {
   return (
     <header className="sticky top-0 flex items-center px-2 sm:px-4 py-2 z-50 shadow-md bg-white">
       <button className="transition-all duration-300 py-2.5 px-2.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
-        <Menu />
+        <Menu aria-label="Menu" />
       </button>
 
       <Link href="/">
@@ -27,6 +27,7 @@ function Header() {
         <input
           type="text"
           placeholder="Search"
+          aria-label="Search"
           className="flex-grow px-1 sm:px-5 bg-transparent outline-none"
         />
       </div>
@@ -37,6 +38,7 @@ function Header() {
           auth.signOut()
         }}
         src={auth.currentUser?.photoURL}
+        aria-label="Profile - log out"
         height={36}
         width={36}
         className="cursor-pointer rounded-full ml-2"

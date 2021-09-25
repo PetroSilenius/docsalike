@@ -16,7 +16,7 @@ function DocumentListRow({ id, fileName, timestamp }) {
         <td className="sm:mr-12">{timestamp.toDate().toLocaleDateString()}</td>
         <td>
           <button className="duration-300 p-1.5 rounded-full text-gray-600 hover:bg-gray-200 active:bg-gray-300">
-            <MoreVertical size="20" />
+            <MoreVertical size="20" aria-label="Options" />
           </button>
         </td>
       </tr>
