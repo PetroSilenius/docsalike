@@ -23,10 +23,12 @@ function Document(): JSX.Element {
   )
 
   useEffect(() => {
-    if (!loadingSnapshot && !documentSnapshot) {
-      router.replace('/')
-    } else {
-      setFileName(documentSnapshot?.fileName)
+    if (!loadingSnapshot) {
+      if (!documentSnapshot) {
+        router.replace('/')
+      } else {
+        setFileName(documentSnapshot?.fileName)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentSnapshot])
